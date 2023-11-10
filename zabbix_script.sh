@@ -8,8 +8,9 @@ fi
 # Only run it if we can (ie. on Ubuntu/Debian)
 if [ -x /usr/bin/apt-get ]; then
   apt-get update
-  apt-get -y install zabbix-agent sysv-rc-conf
-  sysv-rc-conf zabbix-agent on
+  apt-get -y install zabbix-agent
+  systemctl enable zabbix-agent
+  systemctl start zabbix-agent
   sed -i 's/Server=127.0.0.1/Server=10.0.1.20/' /etc/zabbix/zabbix_agentd.conf
   sed -i 's/ServerActive=127.0.0.1/ServerActive=10.0.1.20/' /etc/zabbix/zabbix_agentd.conf
   HOSTNAME=`hostname` && sed -i "s/Hostname=Zabbix\ server/Hostname=$HOSTNAME/" /etc/zabbix/zabbix_agentd.conf
